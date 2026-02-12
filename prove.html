@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blox Fruits - Oggetti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-1: #0c1a17;
+            --bg-2: #0e2a2c;
+            --accent: #f4b544;
+            --accent-2: #7bd6c2;
+            --card: #102f2c;
+            --text: #eef7f4;
+            --muted: #b9d2cc;
+            --outline: rgba(255, 255, 255, 0.08);
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(800px 500px at 85% -10%, rgba(123, 214, 194, 0.2), transparent 60%),
+                radial-gradient(700px 500px at 5% 0%, rgba(244, 181, 68, 0.18), transparent 55%),
+                linear-gradient(160deg, var(--bg-1), var(--bg-2));
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 40px 7vw 20px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .title {
+            font-family: "Unbounded", "Trebuchet MS", sans-serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            letter-spacing: 0.02em;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            max-width: 640px;
+            line-height: 1.6;
+        }
+
+        .hero-card {
+            margin: 18px 7vw;
+            padding: 24px;
+            border-radius: 22px;
+            background: linear-gradient(120deg, rgba(16, 47, 44, 0.88), rgba(16, 47, 44, 0.6));
+            border: 1px solid var(--outline);
+            box-shadow: var(--shadow);
+            display: grid;
+            gap: 16px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            border: 1px solid transparent;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--accent);
+            color: #1a1f1e;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            border-color: var(--outline);
+            color: var(--text);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .filters {
+            padding: 12px 7vw 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            border-radius: 999px;
+            padding: 6px 14px;
+            border: 1px solid var(--outline);
+            background: rgba(16, 47, 44, 0.6);
+            color: var(--muted);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chip.active {
+            background: var(--accent-2);
+            color: #0c1a17;
+        }
+
+        .search {
+            width: min(520px, 100%);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--outline);
+            background: rgba(12, 26, 23, 0.8);
+            color: var(--text);
+        }
+
+        main {
+            padding: 24px 7vw 60px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 18px;
+            border: 1px solid var(--outline);
+            padding: 18px;
+            display: grid;
+            gap: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            animation: rise 0.6s ease both;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(140px 80px at 100% 0%, rgba(244, 181, 68, 0.15), transparent 65%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .link {
+            font-weight: 600;
+            font-size: 0.78rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .account {
+            margin: 40px 7vw 0;
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(12, 26, 23, 0.85);
+            border: 1px solid var(--outline);
+            display: grid;
+            gap: 12px;
+        }
+
+        .account h2 {
+            font-family: "Unbounded", "Trebuchet MS", sans-serif;
+            font-size: 1.4rem;
+        }
+
+        .account .btn {
+            width: fit-content;
+        }
+
+        .footer {
+            padding: 40px 7vw;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 680px) {
+            header, .hero-card, .filters, main, .account, .footer {
+                padding-left: 5vw;
+                padding-right: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title">Blox Fruits - Oggetti</div>
+        <p class="subtitle">
+            Una raccolta visiva degli oggetti di Blox Fruits: frutti, spade, armi da fuoco,
+            accessori e materiali. Usa i filtri per esplorare rapidamente.
+        </p>
+    </header>
+
+    <section class="hero-card">
+        <strong>Collezione in crescita</strong>
+        <p class="note">
+            Questa pagina mostra gli oggetti presi dalla Blox Fruits Wiki. Puoi estendere i dati
+            aggiungendo rarita, costo o statistiche quando serviranno.
+        </p>
+        <div class="hero-actions">
+            <button class="btn" id="showAll">Mostra tutti</button>
+            <button class="btn secondary" id="showFruits">Solo frutti</button>
+        </div>
+    </section>
+
+    <section class="filters">
+        <input class="search" id="searchBox" placeholder="Cerca oggetto (es. Dragon, Saber, Kabucha)" />
+        <div class="filter-row" id="categoryChips"></div>
+    </section>
+
+    <main>
+        <div class="grid" id="itemsGrid"></div>
+    </main>
+
+    <section class="account">
+        <h2>Collega account Roblox</h2>
+        <p class="note">
+            Per vedere i tuoi oggetti reali servirebbe l'accesso ufficiale ai dati tramite le API di Roblox
+            e il tuo consenso. Senza un'API specifica di Blox Fruits non e possibile leggere l'inventario
+            direttamente. Possiamo comunque preparare il pulsante e la UI, poi collegarla quando avrai
+            un sistema di autenticazione.
+        </p>
+        <button class="btn secondary" disabled>Connetti account (demo)</button>
+    </section>
+
+    <footer class="footer">
+        Fan page non ufficiale. Dati di base: Blox Fruits Wiki (Fandom).
+    </footer>
+
+    <script>
+        const items = [
+          {
+            "name": "50b Party Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/50b_Party_Hat"
+          },
+          {
+            "name": "Bandanna (Black)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Bandanna_%28Black%29"
+          },
+          {
+            "name": "Bandanna (Green)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Bandanna_%28Green%29"
+          },
+          {
+            "name": "Bandanna (Red)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Bandanna_%28Red%29"
+          },
+          {
+            "name": "Bear Ears",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Bear_Ears"
+          },
+          {
+            "name": "Black Cape",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Black_Cape"
+          },
+          {
+            "name": "Black Spikey Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Black_Spikey_Coat"
+          },
+          {
+            "name": "Blue Spikey Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Blue_Spikey_Coat"
+          },
+          {
+            "name": "Celestial Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Celestial_Helmet"
+          },
+          {
+            "name": "Choppa",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Choppa"
+          },
+          {
+            "name": "Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Coat"
+          },
+          {
+            "name": "Cool Shades",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Cool_Shades"
+          },
+          {
+            "name": "Coven Witch Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Coven_Witch_Hat"
+          },
+          {
+            "name": "Cupid's Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Cupid%27s_Coat"
+          },
+          {
+            "name": "D.S. Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/D.S._Coat"
+          },
+          {
+            "name": "Dark Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dark_Coat"
+          },
+          {
+            "name": "Dino Hood",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dino_Hood"
+          },
+          {
+            "name": "Divine Cloak",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Divine_Cloak"
+          },
+          {
+            "name": "Dojo Belt (Black)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Black%29"
+          },
+          {
+            "name": "Dojo Belt (Blue)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Blue%29"
+          },
+          {
+            "name": "Dojo Belt (Green)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Green%29"
+          },
+          {
+            "name": "Dojo Belt (Orange)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Orange%29"
+          },
+          {
+            "name": "Dojo Belt (Purple)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Purple%29"
+          },
+          {
+            "name": "Dojo Belt (Red)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Red%29"
+          },
+          {
+            "name": "Dojo Belt (White)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28White%29"
+          },
+          {
+            "name": "Dojo Belt (Yellow)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dojo_Belt_%28Yellow%29"
+          },
+          {
+            "name": "Dragon Mantle",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon_Mantle"
+          },
+          {
+            "name": "Elf Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Elf_Hat"
+          },
+          {
+            "name": "Feathered Visage",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Feathered_Visage"
+          },
+          {
+            "name": "Frosty Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Frosty_Helmet"
+          },
+          {
+            "name": "Ghoul Mask",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Ghoul_Mask"
+          },
+          {
+            "name": "Golden Sunhat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Golden_Sunhat"
+          },
+          {
+            "name": "Headband (Black)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Black%29"
+          },
+          {
+            "name": "Headband (Blue)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Blue%29"
+          },
+          {
+            "name": "Headband (Green)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Green%29"
+          },
+          {
+            "name": "Headband (Orange)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Orange%29"
+          },
+          {
+            "name": "Headband (Purple)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Purple%29"
+          },
+          {
+            "name": "Headband (Red)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Red%29"
+          },
+          {
+            "name": "Headband (White)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28White%29"
+          },
+          {
+            "name": "Headband (Yellow)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Headband_%28Yellow%29"
+          },
+          {
+            "name": "Heart Shades",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Heart_Shades"
+          },
+          {
+            "name": "Holiday Cloak",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Holiday_Cloak"
+          },
+          {
+            "name": "Holy Crown",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Holy_Crown"
+          },
+          {
+            "name": "Hunter Cape (Black)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Hunter_Cape_%28Black%29"
+          },
+          {
+            "name": "Hunter Cape (Green)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Hunter_Cape_%28Green%29"
+          },
+          {
+            "name": "Hunter Cape (Red)",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Hunter_Cape_%28Red%29"
+          },
+          {
+            "name": "Jaw Shield",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Jaw_Shield"
+          },
+          {
+            "name": "Kitsune Mask",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Kitsune_Mask"
+          },
+          {
+            "name": "Kitsune Ribbon",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Kitsune_Ribbon"
+          },
+          {
+            "name": "Lei",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Lei"
+          },
+          {
+            "name": "Leviathan Crown",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Leviathan_Crown"
+          },
+          {
+            "name": "Leviathan Shield",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Leviathan_Shield"
+          },
+          {
+            "name": "Marine Cap",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Marine_Cap"
+          },
+          {
+            "name": "Musketeer Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Musketeer_Hat"
+          },
+          {
+            "name": "Oni Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Oni_Helmet"
+          },
+          {
+            "name": "Pale Scarf",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Pale_Scarf"
+          },
+          {
+            "name": "Party Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Party_Hat"
+          },
+          {
+            "name": "Peppermint Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Peppermint_Helmet"
+          },
+          {
+            "name": "Pilot Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Pilot_Helmet"
+          },
+          {
+            "name": "Pink Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Pink_Coat"
+          },
+          {
+            "name": "Pretty Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Pretty_Helmet"
+          },
+          {
+            "name": "Pumpkin Mask",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Pumpkin_Mask"
+          },
+          {
+            "name": "Red Ribbon",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Red_Ribbon"
+          },
+          {
+            "name": "Red Spikey Coat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Red_Spikey_Coat"
+          },
+          {
+            "name": "Sanguine Cloak",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Sanguine_Cloak"
+          },
+          {
+            "name": "Santa Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Santa_Hat"
+          },
+          {
+            "name": "Shark Tooth Necklace",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Shark_Tooth_Necklace"
+          },
+          {
+            "name": "Swan Glasses",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Swan_Glasses"
+          },
+          {
+            "name": "Swordsman Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Swordsman_Hat"
+          },
+          {
+            "name": "T-Rex Skull",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/T-Rex_Skull"
+          },
+          {
+            "name": "Terror Jaw",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Terror_Jaw"
+          },
+          {
+            "name": "Tomoe Ring",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Tomoe_Ring"
+          },
+          {
+            "name": "Top Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Top_Hat"
+          },
+          {
+            "name": "Usoap's Hat",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Usoap%27s_Hat"
+          },
+          {
+            "name": "Uzoth's Cloak",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Uzoth%27s_Cloak"
+          },
+          {
+            "name": "Valkyrie Helm",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Valkyrie_Helm"
+          },
+          {
+            "name": "Warrior Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Warrior_Helmet"
+          },
+          {
+            "name": "Wyvern Helmet",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Wyvern_Helmet"
+          },
+          {
+            "name": "Zebra Cap",
+            "type": "Accessorio",
+            "link": "https://blox-fruits.fandom.com/wiki/Zebra_Cap"
+          },
+          {
+            "name": "Acidum Rifle",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Acidum_Rifle"
+          },
+          {
+            "name": "Bazooka",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Bazooka"
+          },
+          {
+            "name": "Bizarre Revolver",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Bizarre_Revolver"
+          },
+          {
+            "name": "Bizarre Rifle",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Bizarre_Rifle"
+          },
+          {
+            "name": "Cannon",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Cannon"
+          },
+          {
+            "name": "Dragonstorm",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragonstorm"
+          },
+          {
+            "name": "Dual Flintlock",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Dual_Flintlock"
+          },
+          {
+            "name": "Flintlock",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Flintlock"
+          },
+          {
+            "name": "Kabucha",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Kabucha"
+          },
+          {
+            "name": "Magma Blaster",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Magma_Blaster"
+          },
+          {
+            "name": "Musket",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Musket"
+          },
+          {
+            "name": "Refined Flintlock",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Refined_Flintlock"
+          },
+          {
+            "name": "Refined Musket",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Refined_Musket"
+          },
+          {
+            "name": "Refined Slingshot",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Refined_Slingshot"
+          },
+          {
+            "name": "Shotgun",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Shotgun"
+          },
+          {
+            "name": "Skull Guitar",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Skull_Guitar"
+          },
+          {
+            "name": "Slingshot",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Slingshot"
+          },
+          {
+            "name": "Venom Bow",
+            "type": "Arma da fuoco",
+            "link": "https://blox-fruits.fandom.com/wiki/Venom_Bow"
+          },
+          {
+            "name": "Barrier",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Barrier"
+          },
+          {
+            "name": "Blade",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Blade"
+          },
+          {
+            "name": "Blizzard",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Blizzard"
+          },
+          {
+            "name": "Bomb",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Bomb"
+          },
+          {
+            "name": "Buddha",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Buddha"
+          },
+          {
+            "name": "Chop",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Chop"
+          },
+          {
+            "name": "Control",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Control"
+          },
+          {
+            "name": "Creation",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Creation"
+          },
+          {
+            "name": "Dark",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Dark"
+          },
+          {
+            "name": "Diamond",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Diamond"
+          },
+          {
+            "name": "Door",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Door"
+          },
+          {
+            "name": "Dough",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Dough"
+          },
+          {
+            "name": "Dragon",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon"
+          },
+          {
+            "name": "Dragon (Classic)",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon_%28Classic%29"
+          },
+          {
+            "name": "Eagle",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Eagle"
+          },
+          {
+            "name": "Falcon",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Falcon"
+          },
+          {
+            "name": "Flame",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Flame"
+          },
+          {
+            "name": "Gas",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Gas"
+          },
+          {
+            "name": "Ghost",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Ghost"
+          },
+          {
+            "name": "Gravity",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Gravity"
+          },
+          {
+            "name": "Ice",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Ice"
+          },
+          {
+            "name": "Kilo",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Kilo"
+          },
+          {
+            "name": "Kitsune",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Kitsune"
+          },
+          {
+            "name": "Leopard",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Leopard"
+          },
+          {
+            "name": "Light",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Light"
+          },
+          {
+            "name": "Lightning",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Lightning"
+          },
+          {
+            "name": "Love",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Love"
+          },
+          {
+            "name": "Magma",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Magma"
+          },
+          {
+            "name": "Mammoth",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Mammoth"
+          },
+          {
+            "name": "Meme",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Meme"
+          },
+          {
+            "name": "Pain",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Pain"
+          },
+          {
+            "name": "Phoenix",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Phoenix"
+          },
+          {
+            "name": "Portal",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Portal"
+          },
+          {
+            "name": "Quake",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Quake"
+          },
+          {
+            "name": "Revive",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Revive"
+          },
+          {
+            "name": "Rocket",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Rocket"
+          },
+          {
+            "name": "Rogue",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Rogue"
+          },
+          {
+            "name": "Rubber",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Rubber"
+          },
+          {
+            "name": "Sand",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Sand"
+          },
+          {
+            "name": "Shadow",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Shadow"
+          },
+          {
+            "name": "Smoke",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Smoke"
+          },
+          {
+            "name": "Soul",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Soul"
+          },
+          {
+            "name": "Sound",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Sound"
+          },
+          {
+            "name": "Spider",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Spider"
+          },
+          {
+            "name": "Spike",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Spike"
+          },
+          {
+            "name": "Spin",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Spin"
+          },
+          {
+            "name": "Spirit",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Spirit"
+          },
+          {
+            "name": "Spring",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Spring"
+          },
+          {
+            "name": "T-Rex",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/T-Rex"
+          },
+          {
+            "name": "Tiger",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Tiger"
+          },
+          {
+            "name": "Venom",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Venom"
+          },
+          {
+            "name": "Yeti",
+            "type": "Frutto",
+            "link": "https://blox-fruits.fandom.com/wiki/Yeti"
+          },
+          {
+            "name": "Alucard Fragment",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Alucard_Fragment"
+          },
+          {
+            "name": "Angel Wings",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Angel_Wings"
+          },
+          {
+            "name": "Azure Ember",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Azure_Ember"
+          },
+          {
+            "name": "Berries",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Berries"
+          },
+          {
+            "name": "Blaze Ember",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Blaze_Ember"
+          },
+          {
+            "name": "Blue Icicle Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Blue_Icicle_Berry"
+          },
+          {
+            "name": "Bones",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Bones"
+          },
+          {
+            "name": "Candy",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Candy"
+          },
+          {
+            "name": "Candy Corn",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Candy_Corn"
+          },
+          {
+            "name": "Celestial Token",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Celestial_Token"
+          },
+          {
+            "name": "Confetti",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Confetti"
+          },
+          {
+            "name": "Conjured Cocoa",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Conjured_Cocoa"
+          },
+          {
+            "name": "Dark Fragment",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Dark_Fragment"
+          },
+          {
+            "name": "Demonic Wisp",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Demonic_Wisp"
+          },
+          {
+            "name": "Dinosaur Bones",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Dinosaur_Bones"
+          },
+          {
+            "name": "Dragon Egg",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon_Egg"
+          },
+          {
+            "name": "Dragon Scale",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon_Scale"
+          },
+          {
+            "name": "Ectoplasm",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Ectoplasm"
+          },
+          {
+            "name": "Electric Wing",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Electric_Wing"
+          },
+          {
+            "name": "Fire Feather",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Fire_Feather"
+          },
+          {
+            "name": "Fire Flower",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Fire_Flower"
+          },
+          {
+            "name": "Fish Tail",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Fish_Tail"
+          },
+          {
+            "name": "Fool's Gold",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Fool%27s_Gold"
+          },
+          {
+            "name": "Green Toad Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Green_Toad_Berry"
+          },
+          {
+            "name": "Gunpowder",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Gunpowder"
+          },
+          {
+            "name": "Hearts",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Hearts"
+          },
+          {
+            "name": "Leather",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Leather"
+          },
+          {
+            "name": "Leviathan Heart",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Leviathan_Heart"
+          },
+          {
+            "name": "Leviathan Scale",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Leviathan_Scale"
+          },
+          {
+            "name": "Magma Ore",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Magma_Ore"
+          },
+          {
+            "name": "Meteorite",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Meteorite"
+          },
+          {
+            "name": "Mini Tusk",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Mini_Tusk"
+          },
+          {
+            "name": "Mirror Fractal",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Mirror_Fractal"
+          },
+          {
+            "name": "Monster Magnet",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Monster_Magnet"
+          },
+          {
+            "name": "Moonstone",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Moonstone"
+          },
+          {
+            "name": "Mutant Tooth",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Mutant_Tooth"
+          },
+          {
+            "name": "Mystic Droplet",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Mystic_Droplet"
+          },
+          {
+            "name": "Nightmare Catcher",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Nightmare_Catcher"
+          },
+          {
+            "name": "Oni Token",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Oni_Token"
+          },
+          {
+            "name": "Orange Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Orange_Berry"
+          },
+          {
+            "name": "Pink Pig Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Pink_Pig_Berry"
+          },
+          {
+            "name": "Purple Jelly Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Purple_Jelly_Berry"
+          },
+          {
+            "name": "Radioactive Material",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Radioactive_Material"
+          },
+          {
+            "name": "Red Cherry Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Red_Cherry_Berry"
+          },
+          {
+            "name": "Scrap Metal",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Scrap_Metal"
+          },
+          {
+            "name": "Shark Tooth",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Shark_Tooth"
+          },
+          {
+            "name": "Simulation Data",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Simulation_Data"
+          },
+          {
+            "name": "Summer Token",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Summer_Token"
+          },
+          {
+            "name": "Terror Eyes",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Terror_Eyes"
+          },
+          {
+            "name": "Vampire Fang",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Vampire_Fang"
+          },
+          {
+            "name": "Volcanic Magnet",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Volcanic_Magnet"
+          },
+          {
+            "name": "Volt Capsule",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Volt_Capsule"
+          },
+          {
+            "name": "White Cloud Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/White_Cloud_Berry"
+          },
+          {
+            "name": "Wooden Plank",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Wooden_Plank"
+          },
+          {
+            "name": "Yellow Star Berry",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Yellow_Star_Berry"
+          },
+          {
+            "name": "Yeti Fur",
+            "type": "Materiale",
+            "link": "https://blox-fruits.fandom.com/wiki/Yeti_Fur"
+          },
+          {
+            "name": "Bisento",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Bisento"
+          },
+          {
+            "name": "Buddy Sword",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Buddy_Sword"
+          },
+          {
+            "name": "Canvander",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Canvander"
+          },
+          {
+            "name": "Cursed Dual Katana",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Cursed_Dual_Katana"
+          },
+          {
+            "name": "Cutlass",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Cutlass"
+          },
+          {
+            "name": "Dark Blade",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dark_Blade"
+          },
+          {
+            "name": "Dark Dagger",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dark_Dagger"
+          },
+          {
+            "name": "Dragon Trident",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragon_Trident"
+          },
+          {
+            "name": "Dragonheart",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dragonheart"
+          },
+          {
+            "name": "Dual Katana",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dual_Katana"
+          },
+          {
+            "name": "Dual-Headed Blade",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Dual-Headed_Blade"
+          },
+          {
+            "name": "Fishing Trophy",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Fishing_Trophy"
+          },
+          {
+            "name": "Flail",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Flail"
+          },
+          {
+            "name": "Fox Lamp",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Fox_Lamp"
+          },
+          {
+            "name": "Gravity Blade",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Gravity_Blade"
+          },
+          {
+            "name": "Hallow Scythe",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Hallow_Scythe"
+          },
+          {
+            "name": "Iron Mace",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Iron_Mace"
+          },
+          {
+            "name": "Katana",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Katana"
+          },
+          {
+            "name": "Koko",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Koko"
+          },
+          {
+            "name": "Longsword",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Longsword"
+          },
+          {
+            "name": "Midnight Blade",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Midnight_Blade"
+          },
+          {
+            "name": "Oroshi",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Oroshi"
+          },
+          {
+            "name": "Pipe",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Pipe"
+          },
+          {
+            "name": "Pole (1st Form)",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Pole_%281st_Form%29"
+          },
+          {
+            "name": "Pole (2nd Form)",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Pole_%282nd_Form%29"
+          },
+          {
+            "name": "Rengoku",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Rengoku"
+          },
+          {
+            "name": "Saber",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Saber"
+          },
+          {
+            "name": "Saishi",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Saishi"
+          },
+          {
+            "name": "Shark Anchor",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Shark_Anchor"
+          },
+          {
+            "name": "Shark Saw",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Shark_Saw"
+          },
+          {
+            "name": "Shizu",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Shizu"
+          },
+          {
+            "name": "Soul Cane",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Soul_Cane"
+          },
+          {
+            "name": "Spikey Trident",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Spikey_Trident"
+          },
+          {
+            "name": "Trident",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Trident"
+          },
+          {
+            "name": "Triple Dark Blade",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Triple_Dark_Blade"
+          },
+          {
+            "name": "Triple Katana",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Triple_Katana"
+          },
+          {
+            "name": "True Triple Katana",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/True_Triple_Katana"
+          },
+          {
+            "name": "Tushita",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Tushita"
+          },
+          {
+            "name": "Twin Hooks",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Twin_Hooks"
+          },
+          {
+            "name": "Wardens Sword",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Wardens_Sword"
+          },
+          {
+            "name": "Yama",
+            "type": "Spada",
+            "link": "https://blox-fruits.fandom.com/wiki/Yama"
+          }
+        ];
+
+        const categories = ["Tutti", ...new Set(items.map(item => item.type))];
+        const grid = document.getElementById("itemsGrid");
+        const chips = document.getElementById("categoryChips");
+        const searchBox = document.getElementById("searchBox");
+
+        let activeCategory = "Tutti";
+        let searchTerm = "";
+
+        const renderChips = () => {
+            chips.innerHTML = "";
+            categories.forEach(category => {
+                const button = document.createElement("button");
+                button.textContent = category;
+                button.className = `chip ${category === activeCategory ? "active" : ""}`;
+                button.addEventListener("click", () => {
+                    activeCategory = category;
+                    renderChips();
+                    renderItems();
+                });
+                chips.appendChild(button);
+            });
+        };
+
+        const renderItems = () => {
+            grid.innerHTML = "";
+            const filtered = items.filter(item => {
+                const matchesCategory = activeCategory === "Tutti" || item.type === activeCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
+            });
+
+            filtered.forEach((item, index) => {
+                const card = document.createElement("article");
+                card.className = "card";
+                card.style.animationDelay = `${index * 0.04}s`;
+                card.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <span class="tag">${item.type}</span>
+                    <a class="link" href="${item.link}" target="_blank" rel="noopener">Apri su wiki</a>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        document.getElementById("showAll").addEventListener("click", () => {
+            activeCategory = "Tutti";
+            searchTerm = "";
+            searchBox.value = "";
+            renderChips();
+            renderItems();
+        });
+
+        document.getElementById("showFruits").addEventListener("click", () => {
+            searchTerm = "";
+            searchBox.value = "";
+            activeCategory = "Frutto";
+            renderChips();
+            renderItems();
+        });
+
+        searchBox.addEventListener("input", (event) => {
+            searchTerm = event.target.value.trim().toLowerCase();
+            renderItems();
+        });
+
+        renderChips();
+        renderItems();
+    </script>
+</body>
+</html>
